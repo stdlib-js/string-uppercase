@@ -213,8 +213,8 @@ Copyright &copy; 2016-2022. The Stdlib [Authors][stdlib-authors].
 [npm-image]: http://img.shields.io/npm/v/@stdlib/string-uppercase.svg
 [npm-url]: https://npmjs.org/package/@stdlib/string-uppercase
 
-[test-image]: https://github.com/stdlib-js/string-uppercase/actions/workflows/test.yml/badge.svg
-[test-url]: https://github.com/stdlib-js/string-uppercase/actions/workflows/test.yml
+[test-image]: https://github.com/stdlib-js/string-uppercase/actions/workflows/test.yml/badge.svg?branch=main
+[test-url]: https://github.com/stdlib-js/string-uppercase/actions/workflows/test.yml?query=branch:main
 
 [coverage-image]: https://img.shields.io/codecov/c/github/stdlib-js/string-uppercase/main.svg
 [coverage-url]: https://codecov.io/github/stdlib-js/string-uppercase?branch=main
