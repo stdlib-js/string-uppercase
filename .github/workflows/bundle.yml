@@ -113,7 +113,7 @@ jobs:
         run: |
           SLUG=${{ github.repository }}
           echo "Pushing changes to $SLUG..."
-          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" deno
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" deno --force
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
@@ -142,7 +142,7 @@ jobs:
         run: |
           npm install || npm install || npm install
         timeout-minutes: 15
-      - name: Extract Alias
+      - name: Extract alias
         id: extract-alias
         run: |
           alias=$(grep -E 'require\(' README.md | head -n 1 |  sed -E 's/^var ([a-zA-Z0-9_]+) = .+/\1/')
@@ -204,7 +204,7 @@ jobs:
         run: |
           SLUG=${{ github.repository }}
           echo "Pushing changes to $SLUG..."
-          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" umd
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" umd --force
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
@@ -301,7 +301,7 @@ jobs:
         run: |
           SLUG=${{ github.repository }}
           echo "Pushing changes to $SLUG..."
-          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" esm
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" esm --force
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
