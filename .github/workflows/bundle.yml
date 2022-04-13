@@ -93,6 +93,7 @@ jobs:
           git config --local user.name "stdlib-bot"
       - name: Check if remote `deno` branch exists
         id: deno-branch-exists
+        continue-on-error: true
         run: |
           git ls-remote --exit-code --heads origin deno
           if [ $? -eq 0 ]; then
@@ -197,6 +198,7 @@ jobs:
           git config --local user.name "stdlib-bot"
       - name: Check if remote `umd` branch exists
         id: umd-branch-exists
+        continue-on-error: true
         run: |
           git ls-remote --exit-code --heads origin umd
           if [ $? -eq 0 ]; then
@@ -307,6 +309,7 @@ jobs:
           git config --local user.name "stdlib-bot"
       - name: Check if remote `esm` branch exists
         id: esm-branch-exists
+        continue-on-error: true
         run: |
           git ls-remote --exit-code --heads origin esm
           if [ $? -eq 0 ]; then
