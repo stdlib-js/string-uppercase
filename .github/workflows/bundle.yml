@@ -102,7 +102,7 @@ jobs:
             echo "::set-output name=remote-exists::false"
           fi
       - name: If `deno` exists, checkout branch and rebase on `main`
-        if: ${{ steps.deno-branch-exists.outputs.remote-exists == true }}
+        if: steps.deno-branch-exists.outputs.remote-exists
         run: |
           git checkout -b deno origin/deno
           git rebase main -s recursive -X ours
@@ -207,7 +207,7 @@ jobs:
             echo "::set-output name=remote-exists::false"
           fi
       - name: If `umd` exists, checkout branch and rebase on `main`
-        if: ${{ steps.umd-branch-exists.outputs.remote-exists == true }}
+        if: steps.umd-branch-exists.outputs.remote-exists
         run: |
           git checkout -b umd origin/umd
           git rebase main -s recursive -X ours
@@ -318,7 +318,7 @@ jobs:
             echo "::set-output name=remote-exists::false"
           fi
       - name: If `esm` exists, checkout branch and rebase on `main`
-        if: ${{ steps.esm-branch-exists.outputs.remote-exists == true }}
+        if: steps.esm-branch-exists.outputs.remote-exists
         run: |
           git checkout -b esm origin/esm
           git rebase main -s recursive -X ours
