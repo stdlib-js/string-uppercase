@@ -113,8 +113,8 @@ jobs:
           git checkout -b deno
       - name: Delete everything in current directory aside from deno folder
         run: |
-          find . -type 'f' | grep -v -e "deno" -e ".git" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "deno" -e ".git" | xargs rm -rf
+          find . -type 'f' | grep -v -e "deno" -e ".git/" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "deno" -e ".git/" | xargs rm -rf
       - name: Move deno directory to root
         run: |
           mv ./deno/* .
@@ -218,8 +218,8 @@ jobs:
           git checkout -b umd
       - name: Delete everything in current directory aside from umd folder
         run: |
-          find . -type 'f' | grep -v -e "umd" -e ".git" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "umd" -e ".git" | xargs rm -rf
+          find . -type 'f' | grep -v -e "umd" -e ".git/" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "umd" -e ".git/" | xargs rm -rf
       - name: Move umd directory to root
         run: |
           mv ./umd/* .
@@ -329,8 +329,8 @@ jobs:
           git checkout -b esm
       - name: Delete everything in current directory aside from esm folder
         run: |
-          find . -type 'f' | grep -v -e "esm" -e ".git" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "esm" -e ".git" | xargs rm -rf
+          find . -type 'f' | grep -v -e "esm" -e ".git/" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "esm" -e ".git/" | xargs rm -rf
       - name: Move esm directory to root
         run: |
           mv ./esm/* .
