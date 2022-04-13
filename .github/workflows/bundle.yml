@@ -91,12 +91,25 @@ jobs:
         run: |
           git config --local user.email "noreply@stdlib.io"
           git config --local user.name "stdlib-bot"
-      - name: Checkout `deno` branch
+      - name: Check if remote `deno` branch exists
+        id: deno-branch-exists
+        run: |
+          git ls-remote --exit-code --heads origin deno
+          if [ $? -eq 0 ]; then
+            echo "::set-output name=remote-exists::true"
+          else
+            echo "::set-output name=remote-exists::false"
+          fi
+      - name: If `deno` exists, checkout branch and rebase on `main`
+        if: ${{ steps.deno-branch-exists.outputs.remote-exists == true }}
         run: |
           git checkout -b deno origin/deno
-      - name: Rebase onto main branch
+          git rebase main -s recursive -X ours
+      - name: If `deno` does not exist, checkout `main` and create `deno` branch
+        if: ${{ steps.deno-branch-exists.outputs.remote-exists == false }}
         run: |
-         git rebase main -s recursive -X ours
+          git checkout main
+          git checkout -b deno
       - name: Delete everything in current directory aside from deno folder
         run: |
           find . -type 'f' | grep -v -e "deno" -e ".git" | xargs rm
@@ -182,12 +195,25 @@ jobs:
         run: |
           git config --local user.email "noreply@stdlib.io"
           git config --local user.name "stdlib-bot"
-      - name: Checkout `umd` branch
+      - name: Check if remote `umd` branch exists
+        id: umd-branch-exists
+        run: |
+          git ls-remote --exit-code --heads origin umd
+          if [ $? -eq 0 ]; then
+            echo "::set-output name=remote-exists::true"
+          else
+            echo "::set-output name=remote-exists::false"
+          fi
+      - name: If `umd` exists, checkout branch and rebase on `main`
+        if: ${{ steps.umd-branch-exists.outputs.remote-exists == true }}
         run: |
           git checkout -b umd origin/umd
-      - name: Rebase onto main branch
-        run: |
           git rebase main -s recursive -X ours
+      - name: If `umd` does not exist, checkout `main` and create `umd` branch
+        if: ${{ steps.umd-branch-exists.outputs.remote-exists == false }}
+        run: |
+          git checkout main
+          git checkout -b umd
       - name: Delete everything in current directory aside from umd folder
         run: |
           find . -type 'f' | grep -v -e "umd" -e ".git" | xargs rm
@@ -279,12 +305,25 @@ jobs:
         run: |
           git config --local user.email "noreply@stdlib.io"
           git config --local user.name "stdlib-bot"
-      - name: Checkout `esm` branch
+      - name: Check if remote `esm` branch exists
+        id: esm-branch-exists
+        run: |
+          git ls-remote --exit-code --heads origin esm
+          if [ $? -eq 0 ]; then
+            echo "::set-output name=remote-exists::true"
+          else
+            echo "::set-output name=remote-exists::false"
+          fi
+      - name: If `esm` exists, checkout branch and rebase on `main`
+        if: ${{ steps.esm-branch-exists.outputs.remote-exists == true }}
         run: |
           git checkout -b esm origin/esm
-      - name: Rebase onto main branch
-        run: |
           git rebase main -s recursive -X ours
+      - name: If `esm` does not exist, checkout `main` and create `esm` branch
+        if: ${{ steps.esm-branch-exists.outputs.remote-exists == false }}
+        run: |
+          git checkout main
+          git checkout -b esm
       - name: Delete everything in current directory aside from esm folder
         run: |
           find . -type 'f' | grep -v -e "esm" -e ".git" | xargs rm
