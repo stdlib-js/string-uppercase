@@ -22,11 +22,9 @@ name: bundle
 # Workflow triggers:
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    tags-ignore:
-      - 'v[0-9]+\.[0-9]+\.[0-9]+'
+  workflow_run:
+    workflows: ["productionize"]
+    types: [completed]
 
 # Workflow jobs:
 jobs:
@@ -34,6 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Checkout production branch
+        run: |
+          git fetch --all
+          git checkout -b production origin/production
       - name: Copy files to deno directory
         run: |
           mkdir -p deno
@@ -85,18 +87,33 @@ jobs:
 
           # Create package.json file for deno branch:
           jq --indent 2 '{"name": .name, "version": .version, "description": .description, "license": .license, "type": "module", "main": "./mod.js", "homepage": .homepage, "repository": .repository, "bugs": .bugs, "keywords": .keywords, "funding": .funding}' package.json > ./deno/package.json
-
-      - name: Publish to deno branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./deno
-          publish_branch: deno
-          force_orphan: true
-          user_name: 'stdlib-bot'
-          user_email: 'noreply@stdlib.io'
-          commit_message: 'Auto-generated commit'
-          enable_jekyll: true
+      - name: Configure git
+        run: |
+          git config --local user.email "noreply@stdlib.io"
+          git config --local user.name "stdlib-bot"
+      - name: Checkout `deno` branch
+        run: |
+          git checkout -b deno origin/deno
+      - name: Rebase onto main branch
+        run: |
+          git rebase main
+      - name: Delete everything in current directory aside from deno folder
+        run: |
+          find . -type 'f' | grep -v -e "deno" -e ".git" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "deno" -e ".git" | xargs rm -rf
+      - name: Move deno directory to root
+        run: |
+          mv ./deno/* .
+          rmdir ./deno
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "Auto-generated commit"
+      - name: Push changes
+        run: |
+          SLUG=${{ github.repository }}
+          echo "Pushing changes to $SLUG..."
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" deno
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
@@ -108,6 +125,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Checkout production branch
+        run: |
+          git fetch --all
+          git checkout -b production origin/production
       - name: Copy files to umd directory
         run: |
           mkdir -p umd
@@ -157,18 +178,33 @@ jobs:
 
           # Create package.json file for umd branch:
           jq --indent 2 '{"name": .name, "version": .version, "description": .description, "license": .license, "main": "./bundle.js", "homepage": .homepage, "repository": .repository, "bugs": .bugs, "keywords": .keywords, "funding": .funding}' package.json > ./umd/package.json
-
-      - name: Publish to umd branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./umd
-          publish_branch: umd
-          force_orphan: true
-          user_name: 'stdlib-bot'
-          user_email: 'noreply@stdlib.io'
-          commit_message: 'Auto-generated commit'
-          enable_jekyll: true
+      - name: Configure git
+        run: |
+          git config --local user.email "noreply@stdlib.io"
+          git config --local user.name "stdlib-bot"
+      - name: Checkout `umd` branch
+        run: |
+          git checkout -b umd origin/umd
+      - name: Rebase onto main branch
+        run: |
+          git rebase main
+      - name: Delete everything in current directory aside from umd folder
+        run: |
+          find . -type 'f' | grep -v -e "umd" -e ".git" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "umd" -e ".git" | xargs rm -rf
+      - name: Move umd directory to root
+        run: |
+          mv ./umd/* .
+          rmdir ./umd
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "Auto-generated commit"
+      - name: Push changes
+        run: |
+          SLUG=${{ github.repository }}
+          echo "Pushing changes to $SLUG..."
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" umd
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
@@ -180,6 +216,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Checkout production branch
+        run: |
+          git fetch --all
+          git checkout -b production origin/production
       - name: Copy files to umd directory
         run: |
           mkdir -p esm
@@ -235,18 +275,33 @@ jobs:
 
           # Create package.json file for esm branch:
           jq --indent 2 '{"name": .name, "version": .version, "description": .description, "license": .license, "type": "module", "main": "./index.mjs", "homepage": .homepage, "repository": .repository, "bugs": .bugs, "keywords": .keywords, "funding": .funding}' package.json > ./esm/package.json
-
-      - name: Publish to esm branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./esm
-          publish_branch: esm
-          force_orphan: true
-          user_name: 'stdlib-bot'
-          user_email: 'noreply@stdlib.io'
-          commit_message: 'Auto-generated commit'
-          enable_jekyll: true
+      - name: Configure git
+        run: |
+          git config --local user.email "noreply@stdlib.io"
+          git config --local user.name "stdlib-bot"
+      - name: Checkout `esm` branch
+        run: |
+          git checkout -b esm origin/esm
+      - name: Rebase onto main branch
+        run: |
+          git rebase main
+      - name: Delete everything in current directory aside from esm folder
+        run: |
+          find . -type 'f' | grep -v -e "esm" -e ".git" | xargs rm
+          find . -mindepth 1 -type 'd' | grep -v -e "esm" -e ".git" | xargs rm -rf
+      - name: Move esm directory to root
+        run: |
+          mv ./esm/* .
+          rmdir ./esm
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "Auto-generated commit"
+      - name: Push changes
+        run: |
+          SLUG=${{ github.repository }}
+          echo "Pushing changes to $SLUG..."
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$SLUG.git" esm
       - name: Send status to Slack channel in case of failure
         uses: act10ns/slack@v1
         with:
