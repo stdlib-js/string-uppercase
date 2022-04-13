@@ -30,28 +30,32 @@ limitations under the License.
 
 <!-- /.intro -->
 
-<section class="installation">
 
-## Installation
-
-```bash
-npm install @stdlib/string-uppercase
-```
-
-Alternatively,
-
--   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm` branch][esm-url].
--   If you are using Deno, visit the [`deno` branch][deno-url].
--   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd` branch][umd-url].
-
-</section>
 
 <section class="usage">
 
 ## Usage
 
+To use in Observable,
+
 ```javascript
-var uppercase = require( '@stdlib/string-uppercase' );
+uppercase = require( 'https://cdn.jsdelivr.net/gh/stdlib-js/string-uppercase@umd/bundle.js' )
+```
+
+To include the bundle in a webpage,
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/string-uppercase@umd/bundle.js"></script>
+```
+
+If no recognized module system is present, access bundle contents via the global scope:
+
+```html
+<script type="text/javascript">
+(function () {
+    window.uppercase;
+})();
+</script>
 ```
 
 #### uppercase( str )
@@ -73,8 +77,13 @@ var str = uppercase( 'bEEp' );
 
 <!-- eslint no-undef: "error" -->
 
-```javascript
-var uppercase = require( '@stdlib/string-uppercase' );
+```html
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/string-uppercase@umd/bundle.js"></script>
+<script type="text/javascript">
+(function () {
 
 var str;
 
@@ -92,72 +101,18 @@ str = uppercase( '$**_beep_BoOp_**$' );
 
 str = uppercase( '' );
 // returns ''
+
+})();
+</script>
+</body>
+</html>
 ```
 
 </section>
 
 <!-- /.examples -->
 
-* * *
 
-<section class="cli">
-
-## CLI
-
-<section class="installation">
-
-## Installation
-
-To use the module as a general utility, install the module globally
-
-```bash
-npm install -g @stdlib/string-uppercase
-```
-
-</section>
-
-<!-- CLI usage documentation. -->
-
-<section class="usage">
-
-### Usage
-
-```text
-Usage: uppercase [options] [<string>]
-
-Options:
-
-  -h,    --help                Print this message.
-  -V,    --version             Print the package version.
-```
-
-</section>
-
-<!-- /.usage -->
-
-<section class="examples">
-
-### Examples
-
-```bash
-$ uppercase bEEp
-BEEP
-```
-
-To use as a [standard stream][standard-streams],
-
-```bash
-$ echo -n 'bEEp' | uppercase
-BEEP
-```
-
-</section>
-
-<!-- /.examples -->
-
-</section>
-
-<!-- /.cli -->
 
 <!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
 
@@ -246,9 +201,9 @@ Copyright &copy; 2016-2022. The Stdlib [Authors][stdlib-authors].
 
 <!-- <related-links> -->
 
-[@stdlib/string/capitalize]: https://github.com/stdlib-js/string-capitalize
+[@stdlib/string/capitalize]: https://github.com/stdlib-js/string-capitalize/tree/umd
 
-[@stdlib/string/lowercase]: https://github.com/stdlib-js/string-lowercase
+[@stdlib/string/lowercase]: https://github.com/stdlib-js/string-lowercase/tree/umd
 
 <!-- </related-links> -->
 
