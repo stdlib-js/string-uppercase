@@ -103,9 +103,11 @@ jobs:
           fi
       - name: If `deno` exists, checkout branch and rebase on `main`
         if: steps.deno-branch-exists.outputs.remote-exists
+        continue-on-error: true
         run: |
           git checkout -b deno origin/deno
           git rebase main -s recursive -X ours
+          while [ true ]; do git rebase --skip; if [ $? -eq 0 ]; then break; fi; done
       - name: If `deno` does not exist, checkout `main` and create `deno` branch
         if: ${{ steps.deno-branch-exists.outputs.remote-exists == false }}
         run: |
@@ -114,7 +116,7 @@ jobs:
       - name: Delete everything in current directory aside from deno folder
         run: |
           find . -type 'f' | grep -v -e "deno" -e ".git/" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "deno" -e ".git/" | xargs rm -rf
+          find . -mindepth 1 -type 'd' | grep -v -e "deno" -e ".git" | xargs rm -rf
       - name: Move deno directory to root
         run: |
           mv ./deno/* .
@@ -208,9 +210,11 @@ jobs:
           fi
       - name: If `umd` exists, checkout branch and rebase on `main`
         if: steps.umd-branch-exists.outputs.remote-exists
+        continue-on-error: true
         run: |
           git checkout -b umd origin/umd
           git rebase main -s recursive -X ours
+          while [ true ]; do git rebase --skip; if [ $? -eq 0 ]; then break; fi; done
       - name: If `umd` does not exist, checkout `main` and create `umd` branch
         if: ${{ steps.umd-branch-exists.outputs.remote-exists == false }}
         run: |
@@ -219,7 +223,7 @@ jobs:
       - name: Delete everything in current directory aside from umd folder
         run: |
           find . -type 'f' | grep -v -e "umd" -e ".git/" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "umd" -e ".git/" | xargs rm -rf
+          find . -mindepth 1 -type 'd' | grep -v -e "umd" -e ".git" | xargs rm -rf
       - name: Move umd directory to root
         run: |
           mv ./umd/* .
@@ -319,9 +323,11 @@ jobs:
           fi
       - name: If `esm` exists, checkout branch and rebase on `main`
         if: steps.esm-branch-exists.outputs.remote-exists
+        continue-on-error: true
         run: |
           git checkout -b esm origin/esm
           git rebase main -s recursive -X ours
+          while [ true ]; do git rebase --skip; if [ $? -eq 0 ]; then break; fi; done
       - name: If `esm` does not exist, checkout `main` and create `esm` branch
         if: ${{ steps.esm-branch-exists.outputs.remote-exists == false }}
         run: |
@@ -330,7 +336,7 @@ jobs:
       - name: Delete everything in current directory aside from esm folder
         run: |
           find . -type 'f' | grep -v -e "esm" -e ".git/" | xargs rm
-          find . -mindepth 1 -type 'd' | grep -v -e "esm" -e ".git/" | xargs rm -rf
+          find . -mindepth 1 -type 'd' | grep -v -e "esm" -e ".git" | xargs rm -rf
       - name: Move esm directory to root
         run: |
           mv ./esm/* .
